@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LearningAPI.Controllers
 {
@@ -103,8 +104,32 @@ namespace LearningAPI.Controllers
             };
             var securityToken = tokenHandler.CreateToken(tokenDescriptor);
             string token = tokenHandler.WriteToken(securityToken);
-            
+
             return token;
+        }
+
+        [HttpGet("auth"), Authorize]
+        public IActionResult Auth()
+        {
+            var id = Convert.ToInt32(User.Claims.Where(
+                    c => c.Type == ClaimTypes.NameIdentifier)
+                .Select(c => c.Value).SingleOrDefault());
+            var name = User.Claims.Where(c => c.Type == ClaimTypes.Name)
+                .Select(c => c.Value).SingleOrDefault();
+            var email = User.Claims.Where(c => c.Type == ClaimTypes.Email)
+                .Select(c => c.Value).SingleOrDefault();
+            if (id != 0 && name != null && email != null)
+            {
+                var user = new
+                {
+                    id,
+                    email,
+                    name
+                };
+                return Ok(new { user });
+            }
+
+            return Unauthorized();
         }
     }
 }

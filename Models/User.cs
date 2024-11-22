@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace LearningAPI.Models
 {
@@ -13,7 +14,7 @@ namespace LearningAPI.Models
         [MaxLength(50)]
         public string Email { get; set; } = string.Empty;
         
-        [MaxLength(100)]
+        [MaxLength(100), JsonIgnore]
         public string Password { get; set; } = string.Empty;
         
         [Column(TypeName = "datetime")]
@@ -21,5 +22,8 @@ namespace LearningAPI.Models
         
         [Column(TypeName = "datetime")]
         public DateTime UpdatedAt { get; set; }
+        
+        [JsonIgnore]
+        public List<Tutorial>? Tutorials { get; set; }
     }
 }
