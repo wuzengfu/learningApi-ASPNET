@@ -22,6 +22,7 @@ namespace LearningAPI.Controllers
                 t.Id,
                 t.Title,
                 t.Description,
+                t.ImageFile,
                 t.CreatedAt,
                 t.UpdatedAt,
                 t.UserId,
@@ -41,7 +42,9 @@ namespace LearningAPI.Controllers
             var myTutorial = new Tutorial()
             {
                 Title = tutorial.Title.Trim(),
-                Description = tutorial.Description.Trim(), CreatedAt = now,
+                Description = tutorial.Description.Trim(),
+                ImageFile = tutorial.ImageFile,
+                CreatedAt = now,
                 UpdatedAt = now,
                 UserId = userId
             };
@@ -65,6 +68,7 @@ namespace LearningAPI.Controllers
                 tutorial.Id,
                 tutorial.Title,
                 tutorial.Description,
+                tutorial.ImageFile,
                 tutorial.CreatedAt,
                 tutorial.UpdatedAt,
                 tutorial.UserId,
@@ -92,7 +96,8 @@ namespace LearningAPI.Controllers
             }
 
             myTutorial.Title = tutorial.Title;
-            myTutorial.Description = tutorial.Description;
+            myTutorial.Description = tutorial.Description.Trim();
+            myTutorial.ImageFile = tutorial.ImageFile;
             myTutorial.UpdatedAt = DateTime.Now;
 
             _context.SaveChanges();
